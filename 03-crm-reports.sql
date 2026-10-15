@@ -1,0 +1,3 @@
+CREATE OR ALTER PROCEDURE dbo.GetPortfolioEmployeeOverview @DateKey int AS BEGIN SET NOCOUNT ON; DECLARE @d date=CONVERT(date,CONVERT(char(8),@DateKey),112); SELECT p.PortfolioCode,p.BranchId,p.EmployeeCode,e.FirstName,e.LastName FROM dbo.Portfolios p LEFT JOIN dbo.Employees e ON e.EmployeeCode=p.EmployeeCode WHERE p.StartDate<=@d AND (p.EndDate IS NULL OR p.EndDate>=@d); END;
+GO
+CREATE OR ALTER PROCEDURE dbo.GetCustomerSegmentOverview @DateKey int AS BEGIN SET NOCOUNT ON; SELECT s.SegmentCode,s.SegmentName,COUNT(c.CustomerCode) AS CustomerCount FROM dbo.Segments s LEFT JOIN dbo.Customers c ON c.SegmentCode=s.SegmentCode GROUP BY s.SegmentCode,s.SegmentName; END;
